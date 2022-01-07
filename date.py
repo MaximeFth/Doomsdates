@@ -2,13 +2,22 @@ import time as t
 import datetime
 import random
 import sqlite3
-
+import calendar
 from rich.console import Console
 
 
 weekdays = {1:'Monday',2:'Tuesday',3:'Wednesday',4:"Thursday",5:"Friday",6:"Saturday",0:"Sunday"}
 console = Console()
 
+def dayToEng(myDate):
+    date_suffix = ["th", "st", "nd", "rd"]
+
+    if myDate % 10 in [1, 2, 3] and myDate not in [11, 12, 13]:
+        return date_suffix[myDate % 10]
+    else:
+        return date_suffix[0]
+def dateToEng(date):
+    return f"{date.day}{dayToEng(date.day)} of {calendar.month_name[date.month]} {date.year}"
 def gendate():
     start_date = datetime.date(1800, 1, 1)
     end_date = datetime.date(2200, 12, 31)
@@ -35,7 +44,7 @@ if __name__ == "__main__":
     tries=1
     t1 = t.time()
     newdate = gendate()
-    print(newdate)
+    print(dateToEng(newdate))
     answer = input("Enter day:")
     answer = str(answer)
     while weekdays.get((newdate.weekday()+1)%7).upper() != answer.upper():
